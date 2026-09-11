@@ -22,6 +22,8 @@ const requiredStages = [
 const flipSequence = ["skills", "agents", "scripts", "scanners", "more than a harness"];
 
 test("hero contains the requested flip sequence in order", () => {
+  assert.match(source, /<span>Traust is<\/span>/);
+  assert.doesNotMatch(source, /Traust am/);
   let cursor = -1;
   for (const word of flipSequence) {
     const next = source.indexOf(`"${word}"`, cursor + 1);
@@ -36,13 +38,24 @@ test("workflow includes each lifecycle stage", () => {
   }
 });
 
-test("workflow uses an accessible interactive pipeline", () => {
+test("workflow uses an accessible interactive pipeline followed by its record", () => {
   assert.match(source, /class="pipeline-tabs" role="tablist"/);
   assert.match(source, /role="tab"/);
   assert.match(source, /role="tabpanel"/);
   assert.match(source, /aria-selected/);
   assert.match(source, /ArrowRight/);
   assert.doesNotMatch(source, /class="workflow-path"/);
+  assert.match(source, /class="evidence-spine reveal"/);
+  assert.match(source, /class="evidence-rail"/);
+  assert.doesNotMatch(source, /class="continuity"/);
+  assert.ok(source.indexOf('class="pipeline-detail"') < source.indexOf('class="evidence-spine reveal"'));
+  assert.ok(source.indexOf('class="evidence-spine reveal"') < source.indexOf('class="platform"'));
+  assert.doesNotMatch(source, /class="terminal-section"/);
+  assert.doesNotMatch(source, /class="quickstart-band"/);
+  assert.doesNotMatch(source, /Agent-native by design/);
+  assert.doesNotMatch(source, /Start small/);
+  assert.match(styles, /\.workflow-section \{[^}]*color: var\(--paper\);[^}]*background: var\(--dark\);/s);
+  assert.match(styles, /\.pipeline-detail \{[^}]*background: var\(--dark-raised\);/s);
 });
 
 test("differentiator sections and model-neutral language are present", () => {
@@ -91,7 +104,15 @@ test("visual system uses accessible Red Hat UX foundations without branding", ()
   assert.match(styles, /--ink: #151515/);
   assert.match(styles, /--paper: #ffffff/);
   assert.match(styles, /--link: #0066cc/);
-  assert.match(styles, /--accent-strong: #c9190b/);
+  assert.match(styles, /--accent: #ee0000/);
+  assert.match(styles, /--accent-hover: #a60000/);
+  assert.match(styles, /--accent-light: #f9a8a8/);
+  assert.match(styles, /--accent-dark: #5f0000/);
+  assert.match(styles, /--link-dark: #92c5f9/);
+  assert.match(styles, /--success: #63993d/);
+  assert.match(styles, /--warning: #ffcc17/);
+  assert.match(styles, /\.site-nav \{[^}]*height: 80px;/s);
+  assert.match(styles, /\.wordmark-logo \{[^}]*width: 40px;[^}]*height: 48px;/s);
   assert.match(styles, /text-decoration: underline/);
   assert.match(styles, /outline: 3px solid var\(--link\)/);
   assert.match(html, /name="theme-color" content="#151515"/);

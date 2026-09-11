@@ -213,16 +213,6 @@ const stages = [
   },
 ];
 
-const terminalLines = [
-  { delay: 0, html: '<span class="terminal-prompt">›</span> <span class="terminal-command">/secure-code-audit github.com/acme/payments</span>' },
-  { delay: 1, html: '<span class="terminal-dim">traust</span>  loading workflow <span class="terminal-pill">audit</span>' },
-  { delay: 2, html: '<span class="terminal-ok">✓</span> threat model found <span class="terminal-dim">payments-threat-model.md</span>' },
-  { delay: 3, html: '<span class="terminal-ok">✓</span> scanners complete <span class="terminal-dim">opengrep · gitleaks · osv</span>' },
-  { delay: 4, html: '<span class="terminal-ok">✓</span> review lanes complete <span class="terminal-dim">auth · dataflow · supply chain</span>' },
-  { delay: 5, html: '<span class="terminal-warn">!</span> 3 findings ready for triage' },
-  { delay: 6, html: '<span class="terminal-dim">output</span> payments-security-audit.json <span class="terminal-ok">schema valid</span>' },
-];
-
 const renderPipelineNode = (stage, index) => `
   <button
     class="pipeline-stage${index === 0 ? " is-active" : ""}"
@@ -297,46 +287,6 @@ app.innerHTML = `
       </div>
     </header>
 
-    <section class="terminal-section" aria-labelledby="terminal-heading">
-      <div class="section-rail reveal">
-        <span>One command in</span><span>Structured evidence out</span>
-      </div>
-      <div class="terminal-layout">
-        <div class="terminal-copy reveal">
-          <span class="section-label">Agent-native by design</span>
-          <h2 id="terminal-heading">Your models do the reasoning.<br />Traust gives it a system.</h2>
-          <p>
-            Skills give agents precise procedures. Contracts keep every handoff legible. Deterministic tools ground the work in facts. The workflow turns all three into repeatable security operations.
-          </p>
-          <div class="model-chips" aria-label="Model support philosophy">
-            <span>your models</span><span>your agents</span><span>your policies</span>
-          </div>
-        </div>
-        <div class="terminal-window reveal" aria-label="Simulated Traust security audit terminal">
-          <div class="terminal-bar">
-            <div class="terminal-controls" aria-hidden="true"><i></i><i></i><i></i></div>
-            <span>traust / workspace / payments</span>
-            <span class="terminal-status">● connected</span>
-          </div>
-          <div class="terminal-body">
-            ${terminalLines.map((line) => `<div class="terminal-line" style="--line-delay:${line.delay}">${line.html}</div>`).join("")}
-            <div class="terminal-cursor" aria-hidden="true"><span>›</span><i></i></div>
-          </div>
-          <div class="terminal-footer"><span>model <b>registry/default</b></span><span>workflow <b>v0.1.1</b></span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="quickstart-band" aria-labelledby="quickstart-heading">
-      <div class="quickstart-index">00</div>
-      <div>
-        <span class="section-label">Start small</span>
-        <h2 id="quickstart-heading">From clone to first audit.</h2>
-      </div>
-      <p>Run a threat model and a multi-framework audit on a repository you are authorized to assess. No campaign infrastructure required.</p>
-      <a class="button button-dark" href="${quickstartUrl}">Read the quickstart ${arrowIcon}</a>
-    </section>
-
     <section class="workflow-section" id="workflow" aria-labelledby="workflow-heading">
       <div class="workflow-intro">
         <span class="section-label reveal">The Traust workflow</span>
@@ -359,21 +309,39 @@ app.innerHTML = `
           ${renderStageDetail(stages[0])}
         </div>
         <div class="pipeline-hint"><span>Click a node to inspect the stage</span><span>Arrow keys move through the pipeline</span></div>
-      </div>
-    </section>
-
-    <section class="continuity" aria-labelledby="continuity-heading">
-      <div class="continuity-copy reveal">
-        <span class="section-label">One continuous record</span>
-        <h2 id="continuity-heading">The workflow remembers.</h2>
-        <p>Every audit, judgment, proof, correction, and verification contributes to a replayable history. Current state can change without erasing how it changed.</p>
-      </div>
-      <div class="event-stream reveal" aria-label="Example finding event history">
-        <div class="event-row event-head"><span>Event</span><span>Evidence</span><span>State</span><span>Time</span></div>
-        <div class="event-row"><span><i class="dot dot-open"></i>Finding created</span><span>static analysis</span><span>open</span><span>09:14</span></div>
-        <div class="event-row"><span><i class="dot dot-warn"></i>Claim triaged</span><span>cited review</span><span>confirmed</span><span>10:02</span></div>
-        <div class="event-row"><span><i class="dot dot-live"></i>Exploit reproduced</span><span>execution</span><span>confirmed</span><span>13:47</span></div>
-        <div class="event-row"><span><i class="dot dot-fix"></i>Patch verified</span><span>re-audit</span><span>resolved</span><span>16:20</span></div>
+        <aside class="evidence-spine reveal" aria-labelledby="evidence-spine-heading">
+          <div class="evidence-spine-copy">
+            <span class="section-label">One continuous record</span>
+            <h3 id="evidence-spine-heading">The workflow remembers.</h3>
+            <p>Every judgment adds evidence without erasing what came before.</p>
+          </div>
+          <ol class="evidence-rail" aria-label="Example finding event history">
+            <li>
+              <span class="evidence-node dot-open" aria-hidden="true"></span>
+              <strong>Finding created</strong>
+              <span>static analysis</span>
+              <small>open</small>
+            </li>
+            <li>
+              <span class="evidence-node dot-warn" aria-hidden="true"></span>
+              <strong>Claim triaged</strong>
+              <span>cited review</span>
+              <small>confirmed</small>
+            </li>
+            <li>
+              <span class="evidence-node dot-live" aria-hidden="true"></span>
+              <strong>Exploit reproduced</strong>
+              <span>execution</span>
+              <small>confirmed</small>
+            </li>
+            <li>
+              <span class="evidence-node dot-fix" aria-hidden="true"></span>
+              <strong>Patch verified</strong>
+              <span>re-audit</span>
+              <small>resolved</small>
+            </li>
+          </ol>
+        </aside>
       </div>
     </section>
 
