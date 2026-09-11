@@ -1,12 +1,10 @@
-import "@fontsource/dm-mono/latin-300.css";
-import "@fontsource/dm-mono/latin-400.css";
-import "@fontsource/dm-mono/latin-500.css";
-import "@fontsource/manrope/latin-400.css";
-import "@fontsource/manrope/latin-500.css";
-import "@fontsource/manrope/latin-600.css";
-import "@fontsource/manrope/latin-700.css";
-import "@fontsource/newsreader/latin-300-italic.css";
-import "@fontsource/newsreader/latin-400-italic.css";
+import "@fontsource/red-hat-display/latin-400.css";
+import "@fontsource/red-hat-display/latin-500.css";
+import "@fontsource/red-hat-display/latin-700.css";
+import "@fontsource/red-hat-text/latin-400.css";
+import "@fontsource/red-hat-text/latin-500.css";
+import "@fontsource/red-hat-mono/latin-400.css";
+import "@fontsource/red-hat-mono/latin-500.css";
 import logoUrl from "./logo.svg";
 import "./styles.css";
 
@@ -101,11 +99,22 @@ const stageIcons = {
         <path d="M59 80a62 62 0 0 1 108-32M181 99a62 62 0 0 1-108 32"/><path d="m164 32 5 18-19-2M76 147l-5-18 19 2"/>
       </g>
     </svg>`,
+  fuzz: `
+    <svg viewBox="0 0 240 180" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="1.5" class="icon-muted">
+        <path d="M84 54h72M70 75h100M64 99h112M76 123h88"/><circle cx="120" cy="91" r="52"/>
+      </g>
+      <g fill="none" stroke="currentColor" stroke-width="2.3" class="icon-accent">
+        <path d="M102 62v-17m36 17v-17M88 80 72 69m80 11 16-11M91 112l-18 12m76-12 18 12M103 119v18m34-18v18"/>
+        <path d="M97 79c0-15 10-24 23-24s23 9 23 24v28c0 16-10 27-23 27s-23-11-23-27zM97 92h46M120 55v79"/>
+      </g>
+    </svg>`,
 };
 
 const stages = [
   {
     number: "01",
+    label: "Inventory",
     phase: "Understand",
     title: "Map the estate.",
     command: "/inventory-repositories",
@@ -113,10 +122,10 @@ const stages = [
       "Start with the whole system, not an isolated repository. Traust discovers source, images, packages, services, ownership, and the product relationships between them.",
     output: "A living inventory and portfolio graph define what exists, who owns it, and what must be assessed.",
     icon: "inventory",
-    side: "left",
   },
   {
     number: "02",
+    label: "Threat model",
     phase: "Model",
     title: "Know what can go wrong.",
     command: "/threat-model",
@@ -124,10 +133,10 @@ const stages = [
       "Your model reads architecture and code to identify trust boundaries, attacker goals, exposed surfaces, and controls before it starts hunting for individual bugs.",
     output: "A threat model becomes shared context for audit, triage, validation, and future change reviews.",
     icon: "threat",
-    side: "right",
   },
   {
     number: "03",
+    label: "Audit",
     phase: "Discover",
     title: "Combine breadth with judgment.",
     command: "/secure-code-audit",
@@ -135,10 +144,10 @@ const stages = [
       "Deterministic scanners enumerate facts. Your models reason over code, configuration, and threat context across industry security frameworks. Each method strengthens the other.",
     output: "Schema-valid findings carry evidence, locations, severity, remediation, and exact workflow provenance.",
     icon: "audit",
-    side: "left",
   },
   {
     number: "04",
+    label: "Triage",
     phase: "Decide",
     title: "Turn alerts into decisions.",
     command: "/triage",
@@ -146,10 +155,10 @@ const stages = [
       "Traust adversarially checks every claim, collapses duplicates, ranks exploitability, and routes uncertain conclusions to human review instead of quietly discarding them.",
     output: "Engineering receives a prioritized, cited set of findings rather than another undifferentiated scanner backlog.",
     icon: "triage",
-    side: "right",
   },
   {
     number: "05",
+    label: "Validate",
     phase: "Prove",
     title: "Test reality, safely.",
     command: "/validate-findings",
@@ -157,40 +166,50 @@ const stages = [
       "On targets you authorize, scope guards and positive controls govern live probes. Traust can confirm exploit paths, expose attack chains, or mark weak refutations inconclusive.",
     output: "Execution evidence outranks static opinion, while human review governs consequential dismissals and overrides.",
     icon: "validate",
-    side: "left",
   },
   {
     number: "06",
+    label: "Fuzz",
+    phase: "Explore",
+    title: "Turn uncertainty into a test.",
+    command: "/create-fuzzing",
+    description:
+      "Traust generates offline fuzz harnesses for parser, decoder, and templating surfaces, including claims previously dismissed as false positives. Crashers re-enter the same evidence pipeline.",
+    output: "Repeatable harnesses and follow-up findings make refutations falsifiable instead of final by assumption.",
+    icon: "fuzz",
+  },
+  {
+    number: "07",
+    label: "Remediate",
     phase: "Close",
     title: "Remediate. Then verify.",
     command: "/remediate-finding → /verify-remediation",
     description:
       "Generate reviewable patches, run the repository’s own checks in containment, and re-audit the original claim against patched code. Fleet transforms address repeated patterns at scale.",
-    output: "A fix is not complete because a diff exists. It closes only when evidence says the weakness is resolved without regression.",
+    output: "A fix closes only when evidence says the weakness is resolved without introducing a regression.",
     icon: "remediate",
-    side: "right",
-  },
-  {
-    number: "07",
-    phase: "Deliver",
-    title: "Put evidence where work happens.",
-    command: "/generate-team-report",
-    description:
-      "Package validated results, map them to accountable owners, export standards-based SARIF, and connect findings to the systems teams already use to plan and ship work.",
-    output: "Every audience gets the right projection while the underlying contracts remain consistent and traceable.",
-    icon: "deliver",
-    side: "left",
   },
   {
     number: "08",
-    phase: "Repeat",
-    title: "Keep the answer current.",
-    command: "diff scans · dependency watch · drift",
+    label: "Package",
+    phase: "Explain",
+    title: "Make the evidence usable.",
+    command: "/generate-team-report",
     description:
-      "Change-driven routing sends repositories back through focused workflow lanes when code, dependencies, artifacts, methods, or evidence change. Dashboards rebuild from the same source of truth.",
-    output: "Security becomes a continuous operating loop, not a report that starts aging the moment it is delivered.",
-    icon: "continuous",
-    side: "right",
+      "Traust assembles component reports, cumulative dispositions, and executive views into self-contained packages. Standards-based SARIF carries results into existing security tooling.",
+    output: "Every audience gets the right projection while the underlying contracts remain consistent and traceable.",
+    icon: "audit",
+  },
+  {
+    number: "09",
+    label: "Deliver",
+    phase: "Route",
+    title: "Put findings where work happens.",
+    command: "owners · notifications · defects",
+    description:
+      "Route findings to accountable owners and connect the evidence to the collaboration and defect systems teams already use. Delivery stays downstream of validated, packaged results.",
+    output: "Clear ownership turns security evidence into prioritized engineering work, while change-driven scans keep the answer current.",
+    icon: "deliver",
   },
 ];
 
@@ -204,22 +223,35 @@ const terminalLines = [
   { delay: 6, html: '<span class="terminal-dim">output</span> payments-security-audit.json <span class="terminal-ok">schema valid</span>' },
 ];
 
-const renderStage = (stage) => `
-  <article class="workflow-stage stage-${stage.side} reveal" data-stage="${stage.number}">
-    <div class="stage-copy">
-      <div class="stage-kicker"><span>${stage.number}</span>${stage.phase}</div>
-      <h3>${stage.title}</h3>
-      <p>${stage.description}</p>
-      <p class="stage-output"><span>Output</span>${stage.output}</p>
-      <code>${stage.command}</code>
-    </div>
-    <div class="stage-visual" aria-hidden="true">
-      <div class="visual-grid"></div>
-      ${stageIcons[stage.icon]}
-      <span class="visual-label">${stage.phase.toLowerCase()} / ${stage.number}</span>
-    </div>
-    <span class="stage-node" aria-hidden="true"><i></i></span>
-  </article>`;
+const renderPipelineNode = (stage, index) => `
+  <button
+    class="pipeline-stage${index === 0 ? " is-active" : ""}"
+    type="button"
+    role="tab"
+    id="pipeline-stage-${index}"
+    aria-controls="workflow-stage-panel"
+    aria-selected="${index === 0}"
+    tabindex="${index === 0 ? 0 : -1}"
+    data-stage-index="${index}"
+  >
+    <span class="pipeline-number">${stage.number}</span>
+    <span class="pipeline-node" aria-hidden="true"><i></i></span>
+    <span class="pipeline-label">${stage.label}</span>
+  </button>`;
+
+const renderStageDetail = (stage) => `
+  <div class="pipeline-detail-copy">
+    <div class="stage-kicker"><span>${stage.number}</span>${stage.phase}</div>
+    <h3>${stage.title}</h3>
+    <p>${stage.description}</p>
+    <p class="stage-output"><span>Output</span>${stage.output}</p>
+    <code>${stage.command}</code>
+  </div>
+  <div class="pipeline-detail-visual" aria-hidden="true">
+    <div class="visual-grid"></div>
+    ${stageIcons[stage.icon]}
+    <span class="visual-label">${stage.label.toLowerCase()} / ${stage.number}</span>
+  </div>`;
 
 const app = document.querySelector("#app");
 
@@ -242,7 +274,6 @@ app.innerHTML = `
 
   <main id="main">
     <header class="hero" id="top">
-      <img class="hero-logo" src="${logoUrl}" alt="" aria-hidden="true" />
       <div class="hero-eyebrow reveal">Open source · Apache 2.0 · built for the full security lifecycle</div>
       <h1 class="hero-title reveal">
         <span>Traust is</span>
@@ -306,20 +337,29 @@ app.innerHTML = `
       <a class="button button-dark" href="${quickstartUrl}">Read the quickstart ${arrowIcon}</a>
     </section>
 
-    <section class="workflow-intro" id="workflow" aria-labelledby="workflow-heading">
-      <span class="section-label reveal">The Traust workflow</span>
-      <h2 id="workflow-heading" class="reveal">Security is not a scan.<br /><em>It is a chain of decisions.</em></h2>
-      <p class="reveal">Follow one finding through a system where every stage produces durable context for the next.</p>
-    </section>
-
-    <section class="workflow" aria-label="Eight-stage Traust workflow">
-      <div class="workflow-path" aria-hidden="true">
-        <svg viewBox="0 0 1000 3600" preserveAspectRatio="none">
-          <path class="path-shadow" d="M500 0 C500 170 225 230 225 445 S775 690 775 890 S225 1130 225 1340 S775 1580 775 1790 S225 2030 225 2240 S775 2480 775 2690 S225 2930 225 3140 S500 3430 500 3600"/>
-          <path class="path-progress" d="M500 0 C500 170 225 230 225 445 S775 690 775 890 S225 1130 225 1340 S775 1580 775 1790 S225 2030 225 2240 S775 2480 775 2690 S225 2930 225 3140 S500 3430 500 3600"/>
-        </svg>
+    <section class="workflow-section" id="workflow" aria-labelledby="workflow-heading">
+      <div class="workflow-intro">
+        <span class="section-label reveal">The Traust workflow</span>
+        <h2 id="workflow-heading" class="reveal">Security is not a scan.<br /><em>It is a chain of decisions.</em></h2>
+        <p class="reveal">Select a stage to follow the evidence from portfolio inventory to accountable delivery.</p>
       </div>
-      ${stages.map(renderStage).join("")}
+      <div class="pipeline-shell reveal">
+        <div class="pipeline-scroll" aria-label="Nine-stage Traust workflow">
+          <div class="pipeline-tabs" role="tablist" aria-label="Workflow stages">
+            ${stages.map(renderPipelineNode).join("")}
+          </div>
+        </div>
+        <div
+          class="pipeline-detail"
+          id="workflow-stage-panel"
+          role="tabpanel"
+          aria-labelledby="pipeline-stage-0"
+          tabindex="0"
+        >
+          ${renderStageDetail(stages[0])}
+        </div>
+        <div class="pipeline-hint"><span>Click a node to inspect the stage</span><span>Arrow keys move through the pipeline</span></div>
+      </div>
     </section>
 
     <section class="continuity" aria-labelledby="continuity-heading">
@@ -344,16 +384,32 @@ app.innerHTML = `
         <p>Use the full system or integrate only the surfaces you need. Each component is separately versioned and built around the same security lifecycle.</p>
       </div>
 
-      <article class="platform-row platform-sdk reveal">
-        <div class="platform-number">01 / SDK</div>
-        <div class="platform-copy">
-          <h3>Bring Traust into your systems.</h3>
-          <p>A typed Go SDK for invoking skills, dispatching asynchronous work, submitting human and machine decisions, and querying findings and integrity.</p>
-          <a href="https://github.com/openshift/traust-sdk">Explore the SDK ${arrowIcon}</a>
-        </div>
-        <div class="code-card" aria-label="Go SDK example">
-          <div class="code-card-bar"><span>audit.go</span><span>Go</span></div>
-          <pre><code><span class="code-key">report</span>, err := skills.Scan.Run(
+      <div class="platform-accordion reveal">
+        <article class="platform-item is-open">
+          <h3 class="platform-trigger-heading">
+            <button
+              class="platform-trigger"
+              id="platform-trigger-sdk"
+              type="button"
+              aria-expanded="true"
+              aria-controls="platform-panel-sdk"
+              aria-label="01 / SDK: Bring Traust into your systems"
+            >
+              <span class="platform-number">01</span>
+              <span class="platform-name">SDK</span>
+              <span class="platform-summary">Bring Traust into your systems.</span>
+              <span class="platform-toggle" aria-hidden="true"><i></i></span>
+            </button>
+          </h3>
+          <div class="platform-panel" id="platform-panel-sdk" role="region" aria-labelledby="platform-trigger-sdk">
+            <div class="platform-panel-inner">
+              <div class="platform-copy">
+                <p>A typed Go SDK for invoking skills, dispatching asynchronous work, submitting human and machine decisions, and querying findings and integrity.</p>
+                <a href="https://github.com/openshift/traust-sdk">Explore the SDK ${arrowIcon}</a>
+              </div>
+              <div class="code-card" aria-label="Go SDK example">
+                <div class="code-card-bar"><span>audit.go</span><span>Go</span></div>
+                <pre><code><span class="code-key">report</span>, err := skills.Scan.Run(
   ctx, provider,
   skills.ScanInput{
     Repo: <span class="code-string">"github.com/acme/payments"</span>,
@@ -364,40 +420,77 @@ app.innerHTML = `
 <span class="code-key">for</span> _, finding := <span class="code-key">range</span> report.Findings {
   queue.Submit(finding)
 }</code></pre>
-        </div>
-      </article>
-
-      <article class="platform-row platform-contracts reveal">
-        <div class="platform-number">02 / Contracts</div>
-        <div class="platform-copy">
-          <h3>Keep every handoff understood.</h3>
-          <p>Versioned schemas, controlled vocabularies, and typed models define findings from discovery through remediation. Add your own tooling without inventing another translation layer.</p>
-          <a href="https://github.com/openshift/traust-contracts">Explore Contracts ${arrowIcon}</a>
-        </div>
-        <div class="schema-card" aria-label="Contract relationship diagram">
-          <div class="schema-node schema-source">scanner<span>adapter result</span></div>
-          <div class="schema-arrow">→</div>
-          <div class="schema-node schema-core">finding<span>contract v1</span></div>
-          <div class="schema-arrow">→</div>
-          <div class="schema-stack"><span>triage</span><span>validation</span><span>remediation</span></div>
-        </div>
-      </article>
-
-      <article class="platform-row platform-ledger reveal">
-        <div class="platform-number">03 / Ledger</div>
-        <div class="platform-copy">
-          <h3>Preserve why the answer changed.</h3>
-          <p>An authenticated, append-oriented finding decision ledger with deterministic correlation, replayable state, Merkle tamper detection, and optional Cosign or Sigstore attestation.</p>
-          <a href="https://github.com/openshift/traust-ledger">Explore the Ledger ${arrowIcon}</a>
-        </div>
-        <div class="ledger-card" aria-label="Ledger chain illustration">
-          <div class="ledger-root"><span>MERKLE ROOT</span><strong>5c82…9af1</strong></div>
-          <div class="ledger-chain">
-            <span><i>01</i>audit</span><span><i>02</i>triage</span><span><i>03</i>proof</span><span><i>04</i>fix</span>
+              </div>
+            </div>
           </div>
-          <div class="ledger-proof"><span>✓</span> event sequence verified</div>
-        </div>
-      </article>
+        </article>
+
+        <article class="platform-item">
+          <h3 class="platform-trigger-heading">
+            <button
+              class="platform-trigger"
+              id="platform-trigger-contracts"
+              type="button"
+              aria-expanded="false"
+              aria-controls="platform-panel-contracts"
+              aria-label="02 / Contracts: Keep every handoff understood"
+            >
+              <span class="platform-number">02</span>
+              <span class="platform-name">Contracts</span>
+              <span class="platform-summary">Keep every handoff understood.</span>
+              <span class="platform-toggle" aria-hidden="true"><i></i></span>
+            </button>
+          </h3>
+          <div class="platform-panel" id="platform-panel-contracts" role="region" aria-labelledby="platform-trigger-contracts" hidden>
+            <div class="platform-panel-inner">
+              <div class="platform-copy">
+                <p>Versioned schemas, controlled vocabularies, and typed models define findings from discovery through remediation. Add your own tooling without inventing another translation layer.</p>
+                <a href="https://github.com/openshift/traust-contracts">Explore Contracts ${arrowIcon}</a>
+              </div>
+              <div class="schema-card" aria-label="Contract relationship diagram">
+                <div class="schema-node schema-source">scanner<span>adapter result</span></div>
+                <div class="schema-arrow">→</div>
+                <div class="schema-node schema-core">finding<span>contract v1</span></div>
+                <div class="schema-arrow">→</div>
+                <div class="schema-stack"><span>triage</span><span>validation</span><span>remediation</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="platform-item">
+          <h3 class="platform-trigger-heading">
+            <button
+              class="platform-trigger"
+              id="platform-trigger-ledger"
+              type="button"
+              aria-expanded="false"
+              aria-controls="platform-panel-ledger"
+              aria-label="03 / Ledger: Preserve why the answer changed"
+            >
+              <span class="platform-number">03</span>
+              <span class="platform-name">Ledger</span>
+              <span class="platform-summary">Preserve why the answer changed.</span>
+              <span class="platform-toggle" aria-hidden="true"><i></i></span>
+            </button>
+          </h3>
+          <div class="platform-panel" id="platform-panel-ledger" role="region" aria-labelledby="platform-trigger-ledger" hidden>
+            <div class="platform-panel-inner">
+              <div class="platform-copy">
+                <p>An authenticated, append-oriented finding decision ledger with deterministic correlation, replayable state, Merkle tamper detection, and optional Cosign or Sigstore attestation.</p>
+                <a href="https://github.com/openshift/traust-ledger">Explore the Ledger ${arrowIcon}</a>
+              </div>
+              <div class="ledger-card" aria-label="Ledger chain illustration">
+                <div class="ledger-root"><span>MERKLE ROOT</span><strong>5c82…9af1</strong></div>
+                <div class="ledger-chain">
+                  <span><i>01</i>audit</span><span><i>02</i>triage</span><span><i>03</i>proof</span><span><i>04</i>fix</span>
+                </div>
+                <div class="ledger-proof"><span>✓</span> event sequence verified</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section class="final-cta" aria-labelledby="final-heading">
@@ -463,33 +556,67 @@ const revealObserver = new IntersectionObserver(
 
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
-const workflow = document.querySelector(".workflow");
-const workflowProgress = document.querySelector(".path-progress");
-const updateWorkflowPath = () => {
-  if (window.innerWidth <= 760) {
-    return;
+const pipelineTabs = [...document.querySelectorAll(".pipeline-stage")];
+const pipelinePanel = document.querySelector("#workflow-stage-panel");
+let stageTransitionTimer;
+
+const activateStage = (index, focus = false) => {
+  const nextIndex = (index + stages.length) % stages.length;
+  const nextTab = pipelineTabs[nextIndex];
+
+  for (const [tabIndex, tab] of pipelineTabs.entries()) {
+    const isActive = tabIndex === nextIndex;
+    tab.classList.toggle("is-active", isActive);
+    tab.setAttribute("aria-selected", String(isActive));
+    tab.tabIndex = isActive ? 0 : -1;
   }
 
-  const rect = workflow.getBoundingClientRect();
-  const viewportTrigger = window.innerHeight * 0.58;
-  const total = rect.height - window.innerHeight * 0.3;
-  const progress = Math.max(0, Math.min(1, (viewportTrigger - rect.top) / total));
-  workflowProgress.style.setProperty("--path-progress", progress);
+  window.clearTimeout(stageTransitionTimer);
+  pipelinePanel.classList.add("is-changing");
+  stageTransitionTimer = window.setTimeout(() => {
+    pipelinePanel.innerHTML = renderStageDetail(stages[nextIndex]);
+    pipelinePanel.setAttribute("aria-labelledby", nextTab.id);
+    pipelinePanel.classList.remove("is-changing");
+  }, reduceMotion.matches ? 0 : 120);
+
+  nextTab.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "nearest", inline: "center" });
+  if (focus) nextTab.focus();
 };
 
-let ticking = false;
-const requestPathUpdate = () => {
-  if (ticking) return;
-  ticking = true;
-  window.requestAnimationFrame(() => {
-    updateWorkflowPath();
-    ticking = false;
+pipelineTabs.forEach((tab, index) => {
+  tab.addEventListener("click", () => activateStage(index));
+  tab.addEventListener("keydown", (event) => {
+    const keyTargets = {
+      ArrowRight: index + 1,
+      ArrowLeft: index - 1,
+      Home: 0,
+      End: stages.length - 1,
+    };
+
+    if (Object.hasOwn(keyTargets, event.key)) {
+      event.preventDefault();
+      activateStage(keyTargets[event.key], true);
+    }
   });
+});
+
+const platformItems = [...document.querySelectorAll(".platform-item")];
+
+const setPlatformItem = (item, open) => {
+  const trigger = item.querySelector(".platform-trigger");
+  const panel = item.querySelector(".platform-panel");
+  item.classList.toggle("is-open", open);
+  trigger.setAttribute("aria-expanded", String(open));
+  panel.hidden = !open;
 };
 
-window.addEventListener("scroll", requestPathUpdate, { passive: true });
-window.addEventListener("resize", requestPathUpdate);
-updateWorkflowPath();
+platformItems.forEach((item) => {
+  const trigger = item.querySelector(".platform-trigger");
+  trigger.addEventListener("click", () => {
+    const willOpen = !item.classList.contains("is-open");
+    platformItems.forEach((candidate) => setPlatformItem(candidate, candidate === item && willOpen));
+  });
+});
 
 const nav = document.querySelector(".site-nav");
 const updateNav = () => nav.classList.toggle("nav-scrolled", window.scrollY > 24);

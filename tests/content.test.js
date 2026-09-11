@@ -5,6 +5,7 @@ import test from "node:test";
 const source = await readFile(new URL("../src/main.js", import.meta.url), "utf8");
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const logo = await readFile(new URL("../src/logo.svg", import.meta.url), "utf8");
+const styles = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
 
 const requiredStages = [
   "Map the estate.",
@@ -12,9 +13,10 @@ const requiredStages = [
   "Combine breadth with judgment.",
   "Turn alerts into decisions.",
   "Test reality, safely.",
+  "Turn uncertainty into a test.",
   "Remediate. Then verify.",
-  "Put evidence where work happens.",
-  "Keep the answer current.",
+  "Make the evidence usable.",
+  "Put findings where work happens.",
 ];
 
 const flipSequence = ["skills", "agents", "scripts", "scanners", "more than a harness"];
@@ -34,11 +36,34 @@ test("workflow includes each lifecycle stage", () => {
   }
 });
 
+test("workflow uses an accessible interactive pipeline", () => {
+  assert.match(source, /class="pipeline-tabs" role="tablist"/);
+  assert.match(source, /role="tab"/);
+  assert.match(source, /role="tabpanel"/);
+  assert.match(source, /aria-selected/);
+  assert.match(source, /ArrowRight/);
+  assert.doesNotMatch(source, /class="workflow-path"/);
+});
+
 test("differentiator sections and model-neutral language are present", () => {
   assert.match(source, /your models/i);
-  assert.match(source, /01 \/ SDK/);
-  assert.match(source, /02 \/ Contracts/);
-  assert.match(source, /03 \/ Ledger/);
+  assert.match(source, /platform-number">01/);
+  assert.match(source, /platform-name">SDK/);
+  assert.match(source, /platform-number">02/);
+  assert.match(source, /platform-name">Contracts/);
+  assert.match(source, /platform-number">03/);
+  assert.match(source, /platform-name">Ledger/);
+});
+
+test("platform differentiators use an accessible single-open accordion", () => {
+  assert.equal(source.match(/class="platform-trigger"/g)?.length, 3);
+  assert.equal(source.match(/class="platform-panel"/g)?.length, 3);
+  assert.match(source, /aria-expanded="true"/);
+  assert.match(source, /aria-expanded="false"/);
+  assert.match(source, /aria-controls="platform-panel-sdk"/);
+  assert.match(source, /platformItems\.forEach/);
+  assert.match(source, /setPlatformItem/);
+  assert.doesNotMatch(source, /class="platform-row/);
 });
 
 test("document includes essential metadata and skip navigation", () => {
@@ -47,10 +72,27 @@ test("document includes essential metadata and skip navigation", () => {
   assert.match(html, /id="app"/);
 });
 
-test("adapted shield mark is used as brand artwork and favicon", () => {
+test("adapted shield mark is used for visible branding without a hero watermark", () => {
   assert.match(logo, /viewBox="0 0 180 210"/);
   assert.match(source, /import logoUrl from "\.\/logo\.svg"/);
   assert.match(source, /class="wordmark-logo"/);
-  assert.match(source, /class="hero-logo"/);
+  assert.doesNotMatch(source, /class="hero-logo"/);
+  assert.doesNotMatch(styles, /\.hero-logo/);
   assert.match(html, /rel="icon" href="\/src\/logo\.svg"/);
+});
+
+test("visual system uses accessible Red Hat UX foundations without branding", () => {
+  assert.match(source, /@fontsource\/red-hat-display/);
+  assert.match(source, /@fontsource\/red-hat-text/);
+  assert.match(source, /@fontsource\/red-hat-mono/);
+  assert.doesNotMatch(source, /@fontsource\/(?:manrope|newsreader|dm-mono)/);
+  assert.doesNotMatch(source, /Red Hat/i);
+  assert.doesNotMatch(logo, /Red Hat/i);
+  assert.match(styles, /--ink: #151515/);
+  assert.match(styles, /--paper: #ffffff/);
+  assert.match(styles, /--link: #0066cc/);
+  assert.match(styles, /--accent-strong: #c9190b/);
+  assert.match(styles, /text-decoration: underline/);
+  assert.match(styles, /outline: 3px solid var\(--link\)/);
+  assert.match(html, /name="theme-color" content="#151515"/);
 });
